@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auctions.Api", "src\Auction
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{73DA4EA2-59F6-422F-A97E-653BE348DB4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchApi", "src\SearchApi\SearchApi.csproj", "{9CAFD60F-673F-43E6-8C40-DD7763C1B3C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +25,17 @@ Global
 		{73DA4EA2-59F6-422F-A97E-653BE348DB4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73DA4EA2-59F6-422F-A97E-653BE348DB4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73DA4EA2-59F6-422F-A97E-653BE348DB4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CAFD60F-673F-43E6-8C40-DD7763C1B3C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CAFD60F-673F-43E6-8C40-DD7763C1B3C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CAFD60F-673F-43E6-8C40-DD7763C1B3C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CAFD60F-673F-43E6-8C40-DD7763C1B3C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{931CCC8D-3A79-4EB3-87C8-168302E03200} = {DB423AFF-0255-4FEB-9AC6-8302541CEB78}
+		{9CAFD60F-673F-43E6-8C40-DD7763C1B3C1} = {DB423AFF-0255-4FEB-9AC6-8302541CEB78}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {10B46B9B-7C5A-4C0B-B3E3-EAC700CBD0BA}
