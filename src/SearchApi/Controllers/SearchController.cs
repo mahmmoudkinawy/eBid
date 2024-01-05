@@ -4,6 +4,13 @@
 [ApiController]
 public sealed class SearchController : ControllerBase
 {
+    private readonly IDateTimeProvider _dateTimeProvider;
+
+    public SearchController(IDateTimeProvider dateTimeProvider)
+    {
+        _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
+    }
+
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<ItemModel>>> SearchAuctionItems(
         [FromQuery] AuctionItemParams auctionItemParams)
@@ -32,11 +39,13 @@ public sealed class SearchController : ControllerBase
             _ => query.Sort(ai => ai.Ascending(i => i.AuctionEnd))
         };
 
+        var utcNow = _dateTimeProvider.UtcNow;
+
         query = auctionItemParams.FilterBy switch
         {
-            "finished" => query.Match(ai => ai.AuctionEnd < DateTime.UtcNow),
-            "endingSoon" => query.Match(ai => ai.AuctionEnd < DateTime.UtcNow.AddHours(6) && ai.AuctionEnd > DateTime.UtcNow),
-            _ => query.Match(ai => ai.AuctionEnd > DateTime.UtcNow)
+            "finished" => query.Match(ai => ai.AuctionEnd < utcNow),
+            "endingSoon" => query.Match(ai => ai.AuctionEnd < utcNow.AddHours(6) && ai.AuctionEnd > utcNow),
+            _ => query.Match(ai => ai.AuctionEnd > utcNow)
         };
 
         query
