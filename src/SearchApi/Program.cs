@@ -6,6 +6,20 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddMassTransit(opts =>
+{
+    opts.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
+
+    opts.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
+
+    opts.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureEndpoints(context);
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

@@ -5,11 +5,16 @@
 public sealed class AuctionsController : ControllerBase
 {
     private readonly AuctionsDbContext _context;
+    private readonly IPublishEndpoint _publishEndpoint;
     private readonly IMapper _mapper;
 
-    public AuctionsController(AuctionsDbContext context, IMapper mapper)
+    public AuctionsController(
+        AuctionsDbContext context,
+        IPublishEndpoint publishEndpoint,
+        IMapper mapper)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
+        _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
@@ -51,8 +56,12 @@ public sealed class AuctionsController : ControllerBase
 
         var result = await _context.SaveChangesAsync();
 
+        var auctionToReturn = _mapper.Map<AuctionResponse>(auction);
+
+        await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(auctionToReturn));
+
         return result > 0 ?
-            CreatedAtAction(nameof(GetAuctionById), new { auctionId = auction.Id }, _mapper.Map<AuctionResponse>(auction))
+            CreatedAtAction(nameof(GetAuctionById), new { auctionId = auction.Id }, auctionToReturn)
             :
             BadRequest("Problem adding the item to db");
     }

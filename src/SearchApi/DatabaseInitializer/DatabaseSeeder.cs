@@ -14,17 +14,5 @@ public sealed class DatabaseSeeder
             .Key(i => i.Model, KeyType.Text)
             .Key(i => i.Color, KeyType.Text)
             .CreateAsync();
-
-        var auctionItemsToSeed = await File.ReadAllTextAsync("DatabaseInitializer/Seed.json");
-
-        var items = JsonSerializer.Deserialize<IReadOnlyList<ItemModel>>(auctionItemsToSeed, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
-
-        if (items.Count > 0)
-        {
-            await DB.SaveAsync(items);
-        }
     }
 }

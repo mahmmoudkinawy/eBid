@@ -8,6 +8,14 @@ builder.Services.AddDbContext<AuctionsDbContext>(opts => opts.UseNpgsql(builder.
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddMassTransit(opts =>
+{
+    opts.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureEndpoints(context);
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

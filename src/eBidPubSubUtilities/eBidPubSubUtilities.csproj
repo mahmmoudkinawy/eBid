@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Summary>eBid.PubSubUtilities: Shared classes facilitating seamless communication for both consumers and publishers.</Summary>
+		<Description>eBid.PubSubUtilities is a lightweight .NET package providing essential shared classes for seamless communication between message consumers. Simplify your development process by integrating these classes, designed to enhance interoperability and consistency across your messaging components. Efficiently handle messages and events within your application, ensuring a smooth and unified consumer experience.</Description>
+		<Title>eBid.PubSubUtilities</Title>
+		<Authors>Md Kinawy</Authors>
+		<PackageId>eBid.PubSubUtilities</PackageId>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RepositoryUrl>https://github.com/mahmmoudkinawy/eBid</RepositoryUrl>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+
+</Project>

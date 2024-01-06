@@ -1,6 +1,10 @@
-﻿global using Microsoft.AspNetCore.Mvc;
+﻿global using AutoMapper;
+global using eBidPubSubUtilities.Contracts;
+global using MassTransit;
+global using Microsoft.AspNetCore.Mvc;
 global using MongoDB.Driver;
 global using MongoDB.Entities;
+global using SearchApi.Consumers;
 global using SearchApi.DatabaseInitializer;
 global using SearchApi.Helpers;
 global using SearchApi.Models;
