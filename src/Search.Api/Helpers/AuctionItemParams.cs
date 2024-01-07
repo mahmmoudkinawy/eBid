@@ -1,4 +1,4 @@
-﻿namespace SearchApi.Helpers;
+﻿namespace Search.Api.Helpers;
 public sealed class AuctionItemParams
 {
     public int PageNumber { get; set; } = 1;

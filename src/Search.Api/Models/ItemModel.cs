@@ -1,4 +1,4 @@
-﻿namespace SearchApi.Models;
+﻿namespace Search.Api.Models;
 
 [Collection("Items")]
 public sealed class ItemModel : Entity

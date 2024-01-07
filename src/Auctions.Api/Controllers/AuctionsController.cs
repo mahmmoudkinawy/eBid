@@ -54,11 +54,11 @@ public sealed class AuctionsController : ControllerBase
 
         _context.Auctions.Add(auction);
 
-        var result = await _context.SaveChangesAsync();
-
         var auctionToReturn = _mapper.Map<AuctionResponse>(auction);
 
         await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(auctionToReturn));
+
+        var result = await _context.SaveChangesAsync();
 
         return result > 0 ?
             CreatedAtAction(nameof(GetAuctionById), new { auctionId = auction.Id }, auctionToReturn)
@@ -88,6 +88,8 @@ public sealed class AuctionsController : ControllerBase
         auction.Item.Mileage = request.Mileage ?? auction.Item.Mileage;
         auction.Item.Year = request.Year ?? auction.Item.Year;
 
+        await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(auction));
+
         var result = await _context.SaveChangesAsync();
 
         return result > 0 ?
@@ -110,6 +112,8 @@ public sealed class AuctionsController : ControllerBase
         }
 
         _context.Auctions.Remove(auction);
+
+        await _publishEndpoint.Publish(new AuctionDeleted { Id = auctionId });
 
         var result = await _context.SaveChangesAsync();
 

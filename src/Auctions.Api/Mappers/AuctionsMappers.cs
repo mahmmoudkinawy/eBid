@@ -9,5 +9,7 @@ public sealed class AuctionsMappers : Profile
             .ForMember(dest => dest.Item, opt => opt.MapFrom(src => src));
         CreateMap<CreateAuctionRequest, ItemEntity>();
         CreateMap<AuctionResponse, AuctionCreated>();
+        CreateMap<AuctionEntity, AuctionUpdated>().IncludeMembers(a => a.Item);
+        CreateMap<ItemEntity, AuctionUpdated>();
     }
 }

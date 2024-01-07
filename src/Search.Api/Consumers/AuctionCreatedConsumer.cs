@@ -1,4 +1,6 @@
-﻿namespace SearchApi.Consumers;
+﻿using Search.Api.Models;
+
+namespace Search.Api.Consumers;
 public sealed class AuctionCreatedConsumer : IConsumer<AuctionCreated>
 {
     private readonly IMapper _mapper;

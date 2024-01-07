@@ -14,5 +14,9 @@ public sealed class AuctionsDbContext : DbContext
             .WithOne(a => a.Item)
             .HasForeignKey<ItemEntity>(i => i.AuctionId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.AddInboxStateEntity();
+        builder.AddOutboxStateEntity();
+        builder.AddOutboxMessageEntity();
     }
 }

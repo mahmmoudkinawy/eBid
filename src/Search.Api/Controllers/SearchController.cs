@@ -1,4 +1,8 @@
-﻿namespace SearchApi.Controllers;
+﻿using Search.Api.Helpers;
+using Search.Api.Models;
+using Search.Api.Services;
+
+namespace Search.Api.Controllers;
 
 [Route("api/search")]
 [ApiController]
@@ -19,7 +23,7 @@ public sealed class SearchController : ControllerBase
 
         if (!string.IsNullOrEmpty(auctionItemParams.SearchTerm))
         {
-            query.Match(Search.Full, auctionItemParams.SearchTerm).SortByTextScore();
+            query.Match(MongoDB.Entities.Search.Full, auctionItemParams.SearchTerm).SortByTextScore();
         }
 
         if (!string.IsNullOrEmpty(auctionItemParams.Seller))
