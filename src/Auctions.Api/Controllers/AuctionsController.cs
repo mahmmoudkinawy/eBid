@@ -43,14 +43,13 @@ public sealed class AuctionsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateAuction(
         [FromBody] CreateAuctionRequest request)
     {
         var auction = _mapper.Map<AuctionEntity>(request);
 
-        // TODO: set current username
-
-        auction.Seller = "md kianwy";
+        auction.Seller = User.Identity.Name;
 
         _context.Auctions.Add(auction);
 
@@ -80,7 +79,10 @@ public sealed class AuctionsController : ControllerBase
             return NotFound();
         }
 
-        // TODO: check seller == username
+        if (auction.Seller != User.Identity.Name)
+        {
+            return Forbid();
+        }
 
         auction.Item.Make = request.Make ?? auction.Item.Make;
         auction.Item.Model = request.Model ?? auction.Item.Model;
@@ -109,6 +111,11 @@ public sealed class AuctionsController : ControllerBase
         if (auction == null)
         {
             return NotFound();
+        }
+
+        if (auction.Seller != User.Identity.Name)
+        {
+            return Forbid();
         }
 
         _context.Auctions.Remove(auction);

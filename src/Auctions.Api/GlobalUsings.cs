@@ -6,6 +6,7 @@ global using Auctions.Api.Enums;
 global using AutoMapper;
 global using eBidPubSubUtilities.Contracts;
 global using MassTransit;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using System.ComponentModel.DataAnnotations;
