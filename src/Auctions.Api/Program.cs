@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -19,6 +17,10 @@ builder.Services.AddMassTransit(opts =>
         o.UsePostgres();
         o.UseBusOutbox();
     });
+
+    opts.AddConsumersFromNamespaceContaining<AuctionFinishedConsumer>();
+
+    opts.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("auction", false));
 
     opts.UsingRabbitMq((context, cfg) =>
     {

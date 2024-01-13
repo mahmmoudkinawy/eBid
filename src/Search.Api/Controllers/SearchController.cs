@@ -1,8 +1,4 @@
-﻿using Search.Api.Helpers;
-using Search.Api.Models;
-using Search.Api.Services;
-
-namespace Search.Api.Controllers;
+﻿namespace Search.Api.Controllers;
 
 [Route("api/search")]
 [ApiController]
@@ -48,7 +44,7 @@ public sealed class SearchController : ControllerBase
         query = auctionItemParams.FilterBy switch
         {
             "finished" => query.Match(ai => ai.AuctionEnd < utcNow),
-            "endingSoon" => query.Match(ai => ai.AuctionEnd < utcNow.AddHours(6) && ai.AuctionEnd > utcNow),
+            "endingSoon" => query.Match(ai => ai.AuctionEnd < DateTime.UtcNow.AddHours(6) && ai.AuctionEnd > utcNow),
             _ => query.Match(ai => ai.AuctionEnd > utcNow)
         };
 
