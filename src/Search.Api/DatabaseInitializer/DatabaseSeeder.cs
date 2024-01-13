@@ -1,6 +1,4 @@
-﻿using Search.Api.Models;
-
-namespace Search.Api.DatabaseInitializer;
+﻿namespace Search.Api.DatabaseInitializer;
 public sealed class DatabaseSeeder
 {
     public static async Task DbInitializer(WebApplication app)
@@ -21,7 +19,10 @@ public sealed class DatabaseSeeder
         {
             var auctions = await File.ReadAllTextAsync("DatabaseInitializer/auctions.json");
 
-            var items = JsonSerializer.Deserialize<IReadOnlyList<ItemModel>>(auctions);
+            var items = JsonSerializer.Deserialize<IReadOnlyList<ItemModel>>(auctions, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
             await items.SaveAsync();
         }
