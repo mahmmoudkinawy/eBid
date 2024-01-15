@@ -1,6 +1,13 @@
 version: '3.4'
 
 services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+
   postgres:
     container_name: postgres
     image: postgres
@@ -22,13 +29,65 @@ services:
     volumes:
       - /var/lib/mongo/data
 
-  rabbitmq:
-    container_name: rabbitmq
-    image: rabbitmq:3-management-alpine
+  auctions.api:
+    container_name: auctions.api
+    image: kino2001/auctions.api:latest
+    build:
+      context: .
+      dockerfile: src/Auctions.Api/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=postgres:5432; User Id=postgres; Password=postgrespw; Database=AuctionsDbLocal
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMq__Host=rabbitmq
+      - AuctionsIdpUrl=http://auctions.idp
     ports:
-      - 5672:5672
-      - 15672:15672
+      - 7001:80
+    depends_on:
+      - rabbitmq 
+      - postgres
 
-volumes:
-  pgdata:
-  mongodbdata:
+  search.api:
+    container_name: search.api
+    image: kino2001/search.api:latest
+    build:
+      context: .
+      dockerfile: src/Search.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMq__Host=rabbitmq
+      - MongoDbSettings__ConnectionString=mongodb://root:mongodbpw@mongodb:27017
+      - MongoDbSettings__DatabaseName=AuctionsSearchDbLocal
+    ports:
+      - 7002:80
+    depends_on:
+      - rabbitmq 
+      - mongodb
+  
+  auctions.idp:
+    container_name: auctions.idp
+    image: kino2001/auctions.idp:latest
+    build:
+      context: .
+      dockerfile: src/Auctions.Idp/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ConnectionStrings__DefaultConnection=Server=postgres:5432; User Id=postgres; Password=postgrespw; Database=AuctionsIdpDbLocal
+    ports:
+      - 5000:80
+    depends_on:
+      - postgres
+
+  auctions.gateway:
+    container_name: auctions.gateway
+    image: kino2001/auctions.gateway:latest
+    build:
+      context: .
+      dockerfile: src/Auctions.Gateway/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    ports:
+      - 6001:80
+    depends_on:
+      - auctions.api
+      - search.api
+      - auctions.idp
