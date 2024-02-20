@@ -1,26 +1,43 @@
-import { Auction, PagedResult } from '@/types';
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import AuctionCard from './AuctionCard';
+import PageSelector from '../components/PageSelector';
+import { getData } from '../actions/auctionActions';
+import { Auction } from '@/types';
+import Filters from './Filters';
 
-async function getData(): Promise<PagedResult<Auction>> {
-  const res = await fetch('http://localhost:6001/search');
+export default function ListAuctions() {
+  const [auctions, setAuctions] = useState<Auction[]>([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(4);
 
-  if (!res.ok) {
-    throw new Error('Error fetching data');
-  }
+  useEffect(() => {
+    getData(pageNumber, pageSize).then((data) => {
+      setAuctions(data.results);
+      setPageCount(data.pageCount);
+    });
+  }, [pageNumber, pageSize]);
 
-  return res.json();
-}
-
-export default async function ListAuctions() {
-  const data = await getData();
+  if (auctions.length === 0) return <h3>Loading...</h3>;
 
   return (
-    <div className='grid grid-cols-4 gap-6'>
-      {data &&
-        data.results.map((auction) => (
-          <AuctionCard auction={auction} key={auction.id} />
-        ))}
-    </div>
+    <>
+      <Filters pageSize={pageSize} setPageSize={setPageSize} />
+      <div className='grid grid-cols-4 gap-6'>
+        {auctions &&
+          auctions.map((auction) => (
+            <AuctionCard auction={auction} key={auction.id} />
+          ))}
+      </div>
+      <div className='flex justify-center mt-4'>
+        <PageSelector
+          pageChanged={setPageNumber}
+          currentPage={pageNumber}
+          pageCount={pageCount}
+        />
+      </div>
+    </>
   );
 }
