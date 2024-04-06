@@ -27,7 +27,6 @@ export default async function Details({ params }: { params: { id: string } }) {
 
         <div className='flex gap-3'>
           <h3 className='text-2xl font-semibold'>Time remaining:</h3>
-          {/* <CountdownTimer auctionEnd={data.auctionEnd} /> */}
           <CountdownTimer auctionEnd={data.auctionEnd} key={data.id} />
         </div>
       </div>

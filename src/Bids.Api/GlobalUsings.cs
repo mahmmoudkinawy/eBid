@@ -1,0 +1,12 @@
+﻿global using AutoMapper;
+global using Bids.Api.Consumers;
+global using Bids.Api.Contracts;
+global using Bids.Api.Entities;
+global using Bids.Api.Enums;
+global using eBidPubSubUtilities.Contracts;
+global using MassTransit;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using MongoDB.Driver;
+global using MongoDB.Entities;
