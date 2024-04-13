@@ -42,6 +42,8 @@ builder
 		options.TokenValidationParameters.NameClaimType = "username";
 	});
 
+builder.Services.AddHostedService<CheckAuctionFinished>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

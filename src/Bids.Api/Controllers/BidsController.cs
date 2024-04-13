@@ -2,8 +2,17 @@
 
 [Route("api/bids")]
 [ApiController]
-public sealed class BidsController(IMapper mapper, IPublishEndpoint publishEndpoint) : ControllerBase
+public sealed class BidsController : ControllerBase
 {
+	private readonly IMapper _mapper;
+	private readonly IPublishEndpoint _publishEndpoint;
+
+	public BidsController(IMapper mapper, IPublishEndpoint publishEndpoint)
+	{
+		_mapper = mapper;
+		_publishEndpoint = publishEndpoint;
+	}
+
 	[HttpPost]
 	[Authorize]
 	public async Task<IActionResult> PlaceBid([FromQuery] string auctionId, [FromQuery] decimal amount)
@@ -48,10 +57,10 @@ public sealed class BidsController(IMapper mapper, IPublishEndpoint publishEndpo
 			}
 		}
 
-		await publishEndpoint.Publish(mapper.Map<BidPlaced>(bid));
+		await _publishEndpoint.Publish(_mapper.Map<BidPlaced>(bid));
 		await DB.SaveAsync(bid);
 
-		return Ok(mapper.Map<BidResponse>(bid));
+		return Ok(_mapper.Map<BidResponse>(bid));
 	}
 
 	[HttpGet("{auctionId}")]
@@ -59,6 +68,6 @@ public sealed class BidsController(IMapper mapper, IPublishEndpoint publishEndpo
 	{
 		var bids = await DB.Find<BidEntity>().Match(a => a.AuctionId == auctionId).Sort(b => b.Descending(_ => _.BidTime)).ExecuteAsync();
 
-		return Ok(bids.Select(mapper.Map<BidResponse>));
+		return Ok(bids.Select(_mapper.Map<BidResponse>));
 	}
 }

@@ -3,6 +3,7 @@ global using Bids.Api.Consumers;
 global using Bids.Api.Contracts;
 global using Bids.Api.Entities;
 global using Bids.Api.Enums;
+global using Bids.Api.Services;
 global using eBidPubSubUtilities.Contracts;
 global using MassTransit;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
