@@ -6,11 +6,13 @@ public sealed class BidsController : ControllerBase
 {
 	private readonly IMapper _mapper;
 	private readonly IPublishEndpoint _publishEndpoint;
+	private readonly GrpcAuctionClient _grpcClient;
 
-	public BidsController(IMapper mapper, IPublishEndpoint publishEndpoint)
+	public BidsController(IMapper mapper, IPublishEndpoint publishEndpoint, GrpcAuctionClient grpcClient)
 	{
 		_mapper = mapper;
 		_publishEndpoint = publishEndpoint;
+		_grpcClient = grpcClient;
 	}
 
 	[HttpPost]
@@ -21,8 +23,12 @@ public sealed class BidsController : ControllerBase
 
 		if (auction == null)
 		{
-			// TODO: check with auction service if that auction exists
-			return NotFound();
+			auction = _grpcClient.GetAuction(auctionId);
+
+			if (auction == null)
+			{
+				return NotFound();
+			}
 		}
 
 		if (auction.Seller == User.Identity.Name)

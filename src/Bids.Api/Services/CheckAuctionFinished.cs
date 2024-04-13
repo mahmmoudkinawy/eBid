@@ -2,19 +2,15 @@
 
 public sealed class CheckAuctionFinished : BackgroundService
 {
-	private readonly ILogger<CheckAuctionFinished> _logger;
 	private readonly IServiceProvider _services;
 
-	public CheckAuctionFinished(ILogger<CheckAuctionFinished> logger, IServiceProvider services)
+	public CheckAuctionFinished(IServiceProvider services)
 	{
-		_logger = logger;
 		_services = services;
 	}
 
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
-		_logger.LogInformation("Starting check for finished auction");
-
 		while (!stoppingToken.IsCancellationRequested)
 		{
 			await CheckAuctionsAsync(stoppingToken);

@@ -44,6 +44,8 @@ builder
 
 builder.Services.AddHostedService<CheckAuctionFinished>();
 
+builder.Services.AddScoped<GrpcAuctionClient>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

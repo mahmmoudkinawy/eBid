@@ -1,10 +1,12 @@
-﻿global using AutoMapper;
+﻿global using AuctionService;
+global using AutoMapper;
 global using Bids.Api.Consumers;
 global using Bids.Api.Contracts;
 global using Bids.Api.Entities;
 global using Bids.Api.Enums;
 global using Bids.Api.Services;
 global using eBidPubSubUtilities.Contracts;
+global using Grpc.Net.Client;
 global using MassTransit;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Authorization;
