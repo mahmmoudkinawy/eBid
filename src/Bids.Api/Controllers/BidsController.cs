@@ -27,7 +27,7 @@ public sealed class BidsController : ControllerBase
 
 			if (auction == null)
 			{
-				return NotFound();
+				return NotFound("Auction with the given ID does not exist");
 			}
 		}
 
