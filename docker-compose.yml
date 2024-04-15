@@ -119,3 +119,18 @@ services:
       - mongodb
       - rabbitmq
       - auctions.api
+
+  notify.api:
+    container_name: notify.api
+    image: kino2001/notify.api:latest
+    build:
+      context: .
+      dockerfile: src/Notifications.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - RabbitMq__Host=rabbitmq
+    ports:
+      - 7004:80
+    depends_on:
+      - rabbitmq
