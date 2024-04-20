@@ -1,14 +1,11 @@
-'use client';
-
-import { Auction } from '@/types';
 import React from 'react';
-import CarImage from './CarImage';
 import CountdownTimer from './CountdownTimer';
+import CarImage from './CarImage';
+import { Auction } from '@/types';
 import Link from 'next/link';
+import CurrentBid from './CurrentBid';
 
-type Props = {
-  auction: Auction;
-};
+type Props = { auction: Auction };
 
 export default function AuctionCard({ auction }: Props) {
   return (
@@ -17,7 +14,13 @@ export default function AuctionCard({ auction }: Props) {
         <div>
           <CarImage imageUrl={auction.imageUrl} key={auction.id} />
           <div className='absolute bottom-2 left-2'>
-            <CountdownTimer auctionEnd={auction.auctionEnd} key={auction.id} />
+            <CountdownTimer auctionEnd={auction.auctionEnd} />
+          </div>
+          <div className='absolute top-2 right-2'>
+            <CurrentBid
+              reservePrice={auction.reservePrice}
+              amount={auction.currentHighBid}
+            />
           </div>
         </div>
       </div>
