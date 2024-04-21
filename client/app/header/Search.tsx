@@ -1,10 +1,14 @@
 'use client';
 
-import { useParamsStore } from '@/hooks/useParamsStore';
+import React, { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import { usePathname, useRouter } from 'next/navigation';
+import { useParamsStore } from '@/hooks/useParamsStore';
 
 export default function Search() {
-  const setParams = useParamsStore((state) => state.setParams);
+  const router = useRouter();
+  const pathname = usePathname();
+  const setPrams = useParamsStore((state) => state.setParams);
   const setSearchValue = useParamsStore((state) => state.setSearchValue);
   const searchValue = useParamsStore((state) => state.searchValue);
 
@@ -13,7 +17,8 @@ export default function Search() {
   }
 
   function search() {
-    setParams({
+    if (pathname !== '/') router.push('/');
+    setPrams({
       searchTerm: searchValue,
     });
   }
@@ -30,7 +35,7 @@ export default function Search() {
         onChange={onChange}
         type='text'
         placeholder='Search for cars by make, model or color'
-        className='flex-grow pl-5 bg-transparent focus:outline-none border-transparent focus:border-transparent focus:ring-0 text-sm  text-gray-600'
+        className='input-custom text-sm text-gray-600'
       />
       <button onClick={search}>
         <FaSearch
